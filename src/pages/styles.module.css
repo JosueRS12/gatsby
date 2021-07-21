@@ -1,0 +1,9 @@
+.setBackgroundColor{
+  background-color: cyan;
+}
+
+.container{
+  padding: 20px;
+  margin: 30%;
+  text-align: center;
+}
