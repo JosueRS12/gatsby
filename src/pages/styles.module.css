@@ -7,3 +7,7 @@
   margin: 30%;
   text-align: center;
 }
+
+.containerImg{
+  max-width: 40vw;
+}
