@@ -16,7 +16,18 @@ module.exports = {
     "gatsby-plugin-sitemap",
     "gatsby-transformer-remark",
     "gatsby-plugin-mdx",
-    "gatsby-plugin-sharp",
+    {
+      resolve: "gatsby-plugin-sharp",
+      options: {
+        defaults: {},
+        failOnError: true,
+        base64Width: 20,
+        forcesBase64Format: "",
+        useMozJpeg: process.env.GATSBY_JPEG_ENCODER === "MOZJPEG",
+        stripMetadata: true,
+        defaultQuality: 50,
+      },
+    },
     "gatsby-transformer-sharp",
     {
       resolve: "gatsby-source-filesystem",
@@ -40,6 +51,16 @@ module.exports = {
         name: `blog`,
         path: `${__dirname}/blog`,
       }
+    },
+    {
+      resolve: "gatsby-source-strapi",
+      options: {
+        apiURL:"http://localhost:1337",
+        collectionTypes: [
+          "article",
+        ],
+        queryLimit: 1000,
+      },
     },
   ],
 };

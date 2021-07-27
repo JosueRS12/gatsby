@@ -1,51 +1,52 @@
 import * as React from 'react';
 import Layout from './Layout';
-import {graphql} from 'gatsby';
-import {MDXRenderer} from 'gatsby-plugin-mdx';
+import {graphql, Link} from 'gatsby';
+import {GatsbyImage, getImage} from 'gatsby-plugin-image';
+//import Img from "gatsby-image";
+//import {MDXRenderer} from 'gatsby-plugin-mdx';
+
+export const query = graphql`
+  query{
+    allStrapiArticle {
+      nodes {
+        title
+        authorName
+        image {
+          localFile{
+            childImageSharp {
+              gatsbyImageData(
+                width: 200
+                height: 200
+              )
+            }
+          }
+        }
+        manualDate
+        id
+      }  
+    }
+  }
+` 
 
 const Blog = ({data}) =>{
+  const articleData = data.allStrapiArticle.nodes;
   return(
     <Layout name="hehe" nameComponent="my blog" page="wenas">
       <p> hola </p>
         { 
-          data.allMdx.nodes.map( node  => (
-            <article key={node.id}>
-              <h2>{node.frontmatter.title}</h2> 
-              <p>Posted: {node.frontmatter.date} </p>
-              <MDXRenderer>
-                {node.body}
-              </MDXRenderer>
-            </article>
-          ))
+          <ul>
+          {articleData.map(post => (
+            <li key={post.id}>
+              <h2>
+                <Link to={`/${post.id}`}>{post.title}</Link>
+              </h2>
+              <GatsbyImage image={getImage(post.image.localFile)}/>
+            </li>
+          ))}
+          </ul>
         }
     </Layout>
   )  
 }
 
-export const query = graphql`
-
-  query{
-    allMdx (sort: {fields: frontmatter___date, order: DESC}){
-      nodes {
-        frontmatter{
-          title
-          date(formatString: "MMMM D YYYY")
-        }
-        id
-        body
-      }
-    }
-  }
-  
-`
-
-//export const query = graphql`
-  //query{
-    //allFile{
-      //nodes{
-        //name
-      //}
-    //}
-  //}
-//`; 
 export default Blog;
